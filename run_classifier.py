@@ -683,11 +683,12 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
 
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
         predictions = tf.squeeze(tf.argmax(tf.nn.log_softmax(logits, axis=-1), axis=-1, output_type=tf.int32))
+        o_predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
         accuracy = tf.metrics.accuracy(
-            labels=label_ids, predictions=predictions, weights=is_real_example)
+            labels=label_ids, predictions=o_predictions, weights=is_real_example)
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
         f1_score = tf.contrib.metrics.f1_score(
-            labels=label_ids, predictions=predictions, weights=is_real_example)
+            labels=label_ids, predictions=o_predictions, weights=is_real_example)
         recall = tf.metrics.recall(
             labels=label_ids, predictions=predictions, weights=is_real_example)
         precision = tf.metrics.precision(
