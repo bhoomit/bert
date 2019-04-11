@@ -689,7 +689,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
             labels=label_ids, predictions=predictions, weights=is_real_example)
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
         f1_score = sklearn.metrics.f1_score(
-            labels=label_ids, predictions=o_predictions, average='weighted')
+            labels=label_ids, predictions=predictions, average='weighted')
         
         return {
             "eval_accuracy": accuracy,
