@@ -682,7 +682,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
     elif mode == tf.estimator.ModeKeys.EVAL:
 
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
-        predictions = tf.squeeze(tf.argmax(logits, axis=-1, output_type=tf.int32))
+        predictions = tf.squeeze(tf.argmax(tf.nn.log_softmax(logits, axis=-1), axis=-1, output_type=tf.int32))
         accuracy = tf.metrics.accuracy(
             labels=label_ids, predictions=predictions, weights=is_real_example)
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
