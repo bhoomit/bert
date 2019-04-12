@@ -698,7 +698,9 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
         return {
             "eval_accuracy": accuracy,
             "eval_loss": loss,
-            "f1_score": f1_score
+            "f1_score": f1_score,
+            "y_true": label_ids,
+            "y_pred": predictions
         }
 
       eval_metrics = (metric_fn,
